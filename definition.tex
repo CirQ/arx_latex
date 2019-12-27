@@ -1,0 +1,79 @@
+\section{Definition}
+\label{sec:definition}
+
+ARX describes a family of lightweight cryptographic schemes. In particular, an
+instance of ARX cipher consists of only three kinds of primitives: modular addition,
+circular bit-shifting and bitwise xor. Formally, the ARX cipher family is defined
+as follow:
+
+\begin{definition}
+A scheme $\Pi=(\mathit{Gen},\mathit{Enc},\mathit{Dec})$, with plaintext
+space and ciphertext space $\mathcal{P}=\mathcal{C}\subseteq\mathbb{Z}_{2^n}^*$, is an
+ARX cipher of security parameter $n$, if and only if all the three functions are
+composites of the following three primitives:
+\begin{itemize}
+\setlength\partopsep{0em}
+\setlength\topsep{0em}
+\setlength\itemsep{0em}
+\setlength\parskip{0em}
+\item {\bf Addition}: binary operator of modular addition on $\mathbb{Z}_{2^n}$,
+whose operands $x,y\in\mathbb{Z}_{2^n}$, denoted by $x+y$
+\item {\bf Rotation}: intraword \textbf{left} rotation by $b$ bits to a quantity $x$
+such that $b\in\mathbb{Z}_n$ and $x\in\mathbb{Z}_{2^n}$, denoted by $\mathrm{r}^bx$
+\item {\bf Xor}: bitwise xor operation on $\mathbb{Z}_{2^n}$, denoted by $x\oplus y$
+\end{itemize}
+Denote this scheme by $\Pi\in\textit{ARX}(n)$. When there are no confusions, we can
+also say the function $\mathit{Enc}$ and $\mathit{Dec}$ are $\textit{ARX}(n)$, denote
+by $\mathit{Enc},\mathit{Dec}\in\textit{ARX}(n)$.
+\end{definition}
+
+The definition above does not distinguish the operands for addition and xor. In other
+word, for operation $x+y$, $x$ can either be a word in the ciphertext, or a constant,
+the same as $y$. The operands for $\oplus$ can also be ciphers or constants. As for
+the operation $\mathrm{r}^bx$, the shift offset $b$ must be a constant in $\mathbb{Z}_n$.
+
+The security parameter $n$ here does not correspond to the key size or block size of
+an encryption scheme. Typically a block cipher involves a key scheduling function
+which derives the round keys for each iteration from a fixed-sized key (the
+\textit{seed}). The value of $n$ specifies how the round keys are calculated regarding
+the quantity's word length, while the key size is the length of the seed. The block
+size can also distinct from $n$, as DES (the Feistel construction) encrypts 64-bits
+cipher blocks while the round function is a permutation on 32-bits strings.
+
+As most lightweight ciphers adopt S-boxes as the nonlinear components, though ARX does
+not provide such component. ARX obtains its nonlinearity solely from the modular
+additions, hence may be vulnerable to rotational cryptanalysis. The trade-off here is,
+ARX has more compact implementation, while S-box generally consumes more memory and
+persistent storage. This property means ARX is suitable for most constrained platforms,
+which are designed to equip with scarce resources. For example, a processing unit in a
+wireless sensor network typically has several KBs memory for code and data, while their
+OS code occupies nearly half of the available space \cite{akyildiz2002wireless}.
+
+ARX can be realized by in-place operations, while each one can be run in constant time.
+These two properties bring high performance to ARX ciphers on both software and hardware
+levels. Table \ref{tab:arx} shows how these operations can be realized by in-place
+Python statement and single MIPS32 instruction.
+
+\begin{table*}[t]
+\caption{Implementing in-place ARX operations by Python statements and MIPS32 instructions}
+\label{tab:arx}
+\medskip
+\begin{center}
+\begin{tabular}{c|l|l|l}
+\hline
+             & notation & Python statement & MIPS32 instruction \\ \hline
+\textbf{Add} & $x=x+y$ & \texttt{x = (x + y) \% 2**n} & \texttt{add \$x, \$x, \$y} \\
+\textbf{Rot} & $x=\mathrm{r}^bx$ & \texttt{x = ((x>>(n-b))|(x<<b)) \% 2**n} & \texttt{rol \$x, \$x, \#b} \\
+\textbf{Xor} & $x=x\oplus y$ & \texttt{x = x \textasciicircum\ y} & \texttt{xor \$x, \$x, \$y} \\ \hline
+\end{tabular}
+\end{center}
+\end{table*}
+
+Another important note is that, running single operation in constant time mitigates
+the possibility from suffering timing side-channel attacks. The abandon of lookup tables
+(such as S-box) also prevents the system from \textit{cache-timing attacks}
+\cite{bonneau2006cache}. The properties of ARX cipher show that that it is suitable on
+most constrained computing environments, where the resources are limited but the secrecy
+is still essential for various tasks. Also, it is efficient at software level hence
+it is able to provide secure transmission for IO-intensive channels. Later in Section
+\ref{sec:instances}, two such instances of ARX ciphers will be introduced.

@@ -1,0 +1,86 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+\usepackage{lipsum}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage[nottdefault]{sourcecodepro}
+\usepackage{listings}
+\lstset{
+    breaklines=true,
+    frame=lines,
+    basicstyle=\fontfamily{SourceCodePro-TLF}\scriptsize,
+    captionpos=b,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+\setcounter{page}{1}
+\begin{document}
+
+\title{An Exploratory Study on ARX Cipher Family}
+
+\author{
+    Sinan WANG (11849180)\\
+    {\tt\small 11849180@mail.sustech.edu.cn}
+}
+
+\maketitle
+
+\begin{abstract}
+Modern cryptography concerns the privacy and the integrity of data. However, most
+cryptographic schemes fail to target on resources-constrained platforms, and that's
+why \textbf{lightweight cryptography} is essential for these platforms. ARX ciphers
+are such kind of lightweight cryptographic scheme. Given only three primitives,
+modular Addition, intraword Rotation, and bitwise Xor, ARX ciphers are superior in
+both security and efficiency. This article introduces ARX cipher family, in terms
+of the formal definition, properties, and a brief security analysis. Particularly,
+it is shown that ARX cipher can simulate any permutation (actually, all functions),
+hence is sufficiently expressive. Two instances of ARX cipher are introduced, who
+target on hardware implementation and software efficiency, correspondingly.
+% rotational cryptanalysis?
+\end{abstract}
+
+
+\input{introduction}
+
+\input{definition}
+
+\input{expressiveness}
+
+\input{instances}
+
+\input{conclusion}
+
+
+{\small\bibliographystyle{ieee_fullname}\bibliography{bib}}
+
+\input{appendix}
+
+\end{document}

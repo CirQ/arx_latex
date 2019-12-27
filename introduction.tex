@@ -1,0 +1,52 @@
+\section{Introduction}
+
+All that cryptography concerns are the \textit{privacy} and the \textit{integrity}
+of data, no matter where the data are being processed. During the past decades,
+numerous cryptographic schemes are proposed to realize this two goals. However,
+most of these schemes discount their application scenarios. An typical example is
+that, as pointed out by Ray \etal \cite{beaulieu2015simon}, an RFID authentication
+protocol may require only 64-bits secrecy, while AES providing at least 128-bits
+is certainly a waste of chip space.
+
+Recently, \textit{pervasive computing} and its applications enable us to do our daily
+activity more efficiently. The applications of pervasive computing are built from highly
+constrained devices, such as sensor networks and chip cards \cite{hansmann2013pervasive}.
+These systems highly emphasize on the energy consumption of the operations that taken,
+as well as the computation resource usage \cite{satyanarayanan2001pervasive}. Obviously,
+the secure assurance should also be bound to such constrains. Given the fact that
+existing block cipher standard (\ie, AES) is unsuitable for these constrained
+environments, the need for \textit{lightweight cryptography} attracts more attentions.
+
+ARX (originally termed as AXR \cite{weinmann2009axr}) describes a family of lightweight
+cryptographic schemes, which claim their lightness and universality in terms of limited
+lightweight operations. In particular, an instance of ARX cipher consists of only three
+kinds of operations (or \textit{primitives}): modular addition, circular bit-shifting
+(the rotation) and bitwise xor. These primitives can be efficiently supported by
+individual machine instructions, with each of them runs typically in one clock cycle.
+The simplicity enables their uses on most constrained computing environments, especially
+on those energy-aware systems, \eg, wireless sensor networks \cite{perrig2004security}.
+
+The property of efficiency is not only necessary for hardware support, but also for
+software implementation. Actually, an efficient encryption scheme is also essential for
+those IO-intensive applications over a secure channel. For example, efficient encryption
+and authentication improve the throughput of a popular website that transmits data
+over TLS protocol. ARX cipher can also accelerate software level security-services,
+because its operations can be easily implemented by almost all high-level programming
+languages.
+
+Despite the efficiency concerns, ARX should be provably secure under well-known attacks
+towards a cryptosystem. Showing that each primitive runs in constant time, ARX is robust
+against timing side-channels \cite{beaulieu2015simon}. An ARX cipher gets its
+nonlinearity solely from modular addition, while the other two operations provide only
+linear components. Given such inherited limitation, ARX ciphers could be vulnerable
+under rotational cryptanalysis \cite{khovratovich2010rotational}. Excepting these
+well-known results, the security analysis on ARX ciphers is still a challenging problem
+\cite{mouha2011arx}.
+
+This article explores the ARX cipher family on several aspects. Specifically, Section
+\ref{sec:definition} gives the formal definition of an ARX cipher, in terms of the
+operations, the notations, and their properties. Section \ref{sec:expressiveness}
+discusses the expressiveness of ARX ciphers, particularly, it's shown that any permutation
+on $\mathbb{Z}_{2^n}$ can be solely represented by ARX operations. Section \ref{sec:instances}
+introduces two instances of ARX cipher, with their constructions and applications.
+Section \ref{sec:conclusion} concludes this article.
