@@ -14,15 +14,9 @@
 \usepackage{amsthm}
 \usepackage{enumitem}
 \usepackage{mathrsfs}
+\usepackage{multicol}
 \usepackage[nottdefault]{sourcecodepro}
 \usepackage{listings}
-\lstset{
-    breaklines=true,
-    frame=lines,
-    basicstyle=\fontfamily{SourceCodePro-TLF}\scriptsize,
-    captionpos=b,
-    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
-}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
@@ -31,9 +25,17 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 
+\lstset{
+    breaklines=true,
+    frame=lines,
+    basicstyle=\fontfamily{SourceCodePro-TLF}\scriptsize,
+    captionpos=b,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
+}
+
 
 % If you comment hyperref and then uncomment it, you should delete
-% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% egpaper.aux before re-running latex. (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 

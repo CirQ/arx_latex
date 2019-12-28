@@ -1,3 +1,7 @@
+
+\newpage
+%\columnbreak
+
 \section*{Appendix}
 
 \renewcommand\thesubsection{\Alph{subsection}}
@@ -5,15 +9,18 @@
 \subsection{Permutations by ARX}
 \label{ssec:permarx}
 
-\begin{figure}
+The code below shows how to generate arbitrary permutation by solely ARX primitives.
+The code is written in Python3 syntax, but is functionally equivalent to any other
+programming languages.
+
+\begin{figure}[h!]
 \lstinputlisting[
     language=Python,
-    caption={Python program of permutations by ARX},
+    %caption={Python program of permutations by ARX},
     label={lst:tf-rename}
 ]{permutation.py}
 \vspace{-5mm}
 \end{figure}
-
 
 
 

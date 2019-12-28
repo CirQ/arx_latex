@@ -125,10 +125,36 @@ For all function $f:\mathbb{Z}_{2^n}\rightarrow\mathbb{Z}_{2^n}$, $f\in\textit{A
 
 Formally, it is said that ARX operations are functionally complete in the set of
 functions over $\mathbb{Z}_{2^n}$ \cite{khovratovich2010rotational}. Khovratovich and
-Nikoli{\'c} give a proof by construction for this theorem:
+Nikoli{\'c} give a proof by construction for this theorem\footnote{the proof here does
+not strictly follow the origin, as it has several mistakes and is in different notation}:
 
 \begin{proof}
-Given a sequence $X=x_1x_2\cdots x_n$. 
+Given a sequence $X=x_1x_2\cdots x_n$, the task is to compute all functions $F(X)$ via
+ARX primitives.
 
-Let $s_i(X)=$
+Firstly, let $$s_i(X)=\mathrm{r}^1\Bigg(\sum^{2^{n-1}}\mathrm{r}^i(X)\Bigg)$$ which
+moves the $i$-th bit of X to the rightmost while keeps all other bits 0. To see this,
+note that the innermost $\mathrm{r}^i(X)=x_{i+1}...x_nx_1...x_i$, adding itself by
+$2^{n-1}$ times is equivalent to applying left-shifting by $n-1$ bits, that results
+in $x_i$ at the leftmost while all other bits are $0$s. In other word, $s_i(X)=00...0x_i$.
+
+Then define function $$M_k(X,Y)=\mathrm{r}^{-1}\Bigg(\sum^2\mathrm{r}^{-1}(s_k(X)+s_k(Y))\Bigg)$$
+for two sequences $X$ and $Y$. $M_k$ compute the product of two bits $x_k$ and $y_k$,
+\ie, $M_k(X,Y)=x_ky_k$. This is equivalent to the bitwise-and of $x_k$ and $y_k$.
+The innermost sum $s_k(X)+s_k(Y)=00...0(x_ky_k)(x_k\oplus y_k)$. By rotating it by 1
+bit and multiplying by 2, the product $x_ky_k$ is left at the $n\textrm{-}1$-th bit.
+
+Next, compute the equivalence trial $$j_C(X)=\begin{cases}
+1\textrm{ , if }X=C=c_1c_2...c_n\\
+0\textrm{ , otherwise}\\
+\end{cases}$$ the function can be realized by function $M_k$ and constant 1, that is,
+$j_C(X)=\Big[\bigoplus_{i=1}^nM_i(X,C)\Big]\oplus1$.
+
+Finally, let function $J_{C_1,C_2}(X)=C_2\cdot j_{C_1}(X)$, that evaluates to $C_2$ if
+$X=C_1$ and to 0 for other values. The output function is $f=J_{\textit{X}, F(\textit{X})}$
 \end{proof}
+
+Actually, Khovratovich and Nikoli{\'c} even proof that all functions can be realized by
+only $AR(n)$. This is proofed by the fact that xor can be realized with $AR$ operations.
+The reader may refer \cite{khovratovich2010rotational} for the complete proof of this
+statement.
