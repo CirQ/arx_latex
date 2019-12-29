@@ -1,4 +1,11 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-\lipsum[1]
+This article introduces the ARX ciphers, which only consist of three primitives, modular
+addition, intraword rotation and bitwise exclusive-or. ARX cipher is a kind of lightweight
+ciphers hence is suitable for hardware that equipped with scarce computational resources.
+The use of such lightweight ciphers also accelerate software performance, such as to
+provide secure transmissions for IO-intensive channels. Given three primitives, it is shown
+that ARX cipher can simulate all permutations (and functions) over $\mathbb{Z}_{2^n}$.
+Finally, two instances, \textsc{Speck} and ChaCha are introduced. They jointly show the
+practicability of ARX ciphers at both hardware and software levels.

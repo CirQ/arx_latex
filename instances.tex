@@ -10,10 +10,10 @@ TLS connections.
 
 In this section, two instances of ARX ciphers are introduced. The first one, called
 \textsc{Speck}\cite{beaulieu2015simon2}, is designated on IoT devices. The second one,
-called \textsc{ChaCha}\cite{bernstein2008chacha}, is a general-purposed stream cipher
-family, and it is recently selected as the replacement of RC4 in the
+called ChaCha\cite{bernstein2008chacha}, is a general-purposed stream cipher family,
+and it is recently selected as the replacement of RC4 in the
 TLS\footnote{\url{https://tools.ietf.org/html/rfc7905}} standard.
-g
+
 \subsection{The \textsc{\textbf{Speck}} Block Cipher}
 
 \textsc{Speck} is designed specifically for encrypting data on constrained platforms.
@@ -49,6 +49,45 @@ constrained platforms. The use of uniform parameters (across different security 
 also approves this purpose. Moreover, \textsc{Speck} can be done entirely in-place, so
 unnecessary moves of word can be avoided to obtain better performance.
 
-\subsection{The \textbf{\textsc{ChaCha}} Stream Cipher}
+\subsection{The ChaCha Stream Cipher}
 
-\lipsum[3]
+The cryptosystem ChaCha is a successor of the stream cipher Salsa20
+\cite{bernstein2008salsa20}, which is designed to improve diffusion at each round. By
+design, ChaCha is faster than existing standard ciphers, and is aimed at users who
+value speed more than secrecy. ChaCha offers 3 variants, they are differed in the number
+of rounds: 8, 12 and 20 rounds versions.
+
+ChaCha itself computes a quarter-round to update 4 32-bits state words $(a,b,c,d)$ as:
+
+\begin{equation*}
+\setlength{\abovedisplayshortskip}{0em}
+\setlength{\abovedisplayskip}{0em}
+\begin{split}
+a &= a+b\\[1pt]
+c &= c+d\\[1pt]
+a &= a+b\\[1pt]
+c &= c+d\\[1pt]
+\end{split}
+\quad
+\begin{split}
+d &= \mathrm{r}^{16}(d\oplus a)\\
+b &= \mathrm{r}^{12}(b\oplus c)\\
+d &= \mathrm{r}^{8}(d\oplus a)\\
+b &= \mathrm{r}^{7}(b\oplus c)\\
+\end{split}
+\end{equation*}
+
+A ChaCha quarter-round gives each input word a chance to affect each output word, hence
+achieves efficient diffusion at each round: every 1-bit input difference changes 12.5
+output bits on average. This is the major difference between ChaCha and its predecessor
+Salsa20, who affects on 8 bits per round.
+
+ChaCha adopts the strategy that the plaintext and ciphertext do not affect the key stream,
+in other word, it is a synchronous stream cipher. To apply the stream, ChaCha simply xor
+it to the plaintext, as how a pseudorandom-OTP will work.
+
+Google proposed ChaCha20 along with Poly1305 MAC as a replacement for RC4 in TLS, to
+secures TLS/SSL traffic between the Chrome browser on Android and Google's websites.
+Shortly after Google, both the ChaCha20 and Poly1305 were implemented for a new
+cipher in OpenSSH. These adoptions imply that the ARX cipher family does not only
+essential for hardware efficiency, but also important for software performance.
