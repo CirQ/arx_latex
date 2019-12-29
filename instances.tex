@@ -1,10 +1,54 @@
 \section{Instances}
 \label{sec:instances}
 
+As mentioned before, the design of ARX ciphers ensures they are efficient at both
+hardware and software levels. Hardware efficiency enables ARX can be run on most
+constrained platforms, who typically equips with several KBs RAM and limited CPU power.
+On the other hand, being efficient at software level also accelerate the PC applications
+and services, for example, easing the burden of a busy Web server who accepts intensive
+TLS connections.
+
+In this section, two instances of ARX ciphers are introduced. The first one, called
+\textsc{Speck}\cite{beaulieu2015simon2}, is designated on IoT devices. The second one,
+called \textsc{ChaCha}\cite{bernstein2008chacha}, is a general-purposed stream cipher
+family, and it is recently selected as the replacement of RC4 in the
+TLS\footnote{\url{https://tools.ietf.org/html/rfc7905}} standard.
+g
 \subsection{The \textsc{\textbf{Speck}} Block Cipher}
 
-\lipsum[3]
+\textsc{Speck} is designed specifically for encrypting data on constrained platforms.
+It is also able to offer security services on diverse platforms with different security
+levels, which are controlled by two security parameters.
 
-\subsection{The \textbf{\textsc{ChaCha20}} Stream Cipher}
+\textsc{Speck} block cipher adopts the notation \textsc{Speck}$2n/nm$, where $2n$ is the
+block size and $mn$ is the key size (in bits). In the design, $n\in\{16,24,32,48,64\}$
+and each $n$ corresponds to a set of options for $m$. The \textsc{Speck} round function
+is the (Feistel-based) map
+$$R_k(x,y)=((\mathrm{r}^{-\alpha}x+y)\oplus k,\ \mathrm{r}^\beta y\oplus(\mathrm{r}^{-\alpha}x+y)\oplus k)$$
+where $x$ and $y$ are $n$-bits quantities, and $k$ is the round key. The rotation
+parameters $\alpha$ and $\beta$, and the number of rounds are specified along with
+block size $n$.
+
+\textsc{Speck} with $m$-size words accepts the initial key $K=(\ell_{m-2},\dots,\ell_0,k_0)$,
+it then generates round keys as follows:
+
+\begin{equation*}
+\setlength{\abovedisplayshortskip}{0em}
+\setlength{\abovedisplayskip}{0em}
+\begin{split}
+\ell_{i+m-1} &= (k_i+\mathrm{r}^{-\alpha}\ell_i)\oplus i\\
+k_{i+1} &= \mathrm{r}^\beta k_i \oplus \ell_{i+m-1}
+\end{split}
+\end{equation*}
+
+\noindent The value $k_i$ is the $i$-th round key.
+
+\textsc{Speck}, by designed, uses \textit{simple} round function with necessary times
+of rounds for security, as it offers compact implementation hence is suited for
+constrained platforms. The use of uniform parameters (across different security levels)
+also approves this purpose. Moreover, \textsc{Speck} can be done entirely in-place, so
+unnecessary moves of word can be avoided to obtain better performance.
+
+\subsection{The \textbf{\textsc{ChaCha}} Stream Cipher}
 
 \lipsum[3]
